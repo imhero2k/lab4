@@ -3,13 +3,12 @@ name: Publish Package to GitHub NPM Registry
 on: 
   release:
     types: published
-
-env:
-  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
 jobs:
     npm-package:
       runs-on: ubuntu-latest
+      permissions:                     #added
+        packages: write 
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
@@ -20,3 +19,6 @@ jobs:
             registry-url: 'https://npm.pkg.github.com'
         - name: npm install
           run: npm install
+        - run: npm publish            #added
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #end
